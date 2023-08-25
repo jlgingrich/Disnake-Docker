@@ -1,0 +1,8 @@
+name: disnake
+
+services:
+  core:
+    build: .
+    image: jlgingrich/disnake:latest
+    env_file:
+      - .env
