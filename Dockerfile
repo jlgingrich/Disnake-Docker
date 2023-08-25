@@ -17,6 +17,6 @@ ENV PYTHONUNBUFFERED true
 COPY ./common.py .
 COPY ./bot.py .
 COPY ./main.py .
-COPY ./cogs ./cogs
+COPY ./exts ./exts
 
 CMD ["python3", "main.py"]
