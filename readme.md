@@ -63,3 +63,7 @@ This is a volume where persistant data can be stored by the bot. This is not use
 
 ### `app/logs`
 This is a volume where persistant logs can be stored by the bot. The default logging configuration provided by the base image puts a timed rotating log here named `disnake-core.log`.
+
+## Building
+
+The [Makefile](./Makefile) included with this repository provides targets for building and pushing to the `latest` tag as well as convenient aliases for calling `docker compose`.
