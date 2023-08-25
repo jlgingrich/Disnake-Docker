@@ -6,6 +6,7 @@ VOLUME [ "/app/logs" ]
 
 WORKDIR /app
 
+# Install python requirements
 RUN pip install python-dotenv
 RUN pip install disnake
 RUN pip install PyNaCl

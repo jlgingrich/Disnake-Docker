@@ -1,8 +1,16 @@
 name: disnake
 
+volumes:
+  data:
+  logs:
+
 services:
   core:
     build: .
     image: jlgingrich/disnake:latest
+    container_name: core
     env_file:
       - .env
+    volumes:
+      - data:/app/data
+      - logs:/app/logs
