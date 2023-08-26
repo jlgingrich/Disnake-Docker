@@ -10,15 +10,6 @@ venv:
 	@python3 -m venv .venv
 	@.venv/bin/pip install -r requirements.txt
 
-push:
-	@docker push ${TAG}
-
-up:
-	@docker compose up -d
-
-down:
-	@docker compose down
-
 clean:
 # Remove all docker images with the base tag
 	@docker images -a | grep "${TAG}*" | awk '{print $$1 ":" $$2}' | xargs docker rmi

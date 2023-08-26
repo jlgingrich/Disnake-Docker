@@ -7,6 +7,7 @@ VOLUME [ "/app/logs" ]
 WORKDIR /app
 
 # Install python requirements
+RUN apk add git
 COPY ./requirements.txt .
 RUN pip install -r requirements.txt
 
