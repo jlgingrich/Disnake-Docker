@@ -3,43 +3,31 @@
 THIS MODULE SHOULD NOT BE EDITED!
 """
 from common import *
-from disnake import Client
+import multiprocessing
+import asyncio
+from disnake.utils import search_directory
+from disnake.ext.commands import InteractionBot
+from disnake.ext.commands.errors import ExtensionError
+from watchfiles import watch, Change
 
 # Import and check bot
 from bot import bot
 
-if not isinstance(bot, Client):
+if not isinstance(bot, InteractionBot):
     raise ConfigurationError(
-        "the imported 'bot' in 'bot.py' is not a subclass of 'disnake.Client'"
+        "the imported 'bot' in 'bot.py' is not a subclass of 'disnake.ext.commands.InteractionBot'"
     )
 
-# Import and install cogs
-for cogfile in [
-    f[:-3]
-    for f in os.listdir(os.path.dirname(os.path.abspath(__file__)) + "/cogs")
-    if f.endswith(".py")
-]:
+# Load extensions
+
+EXT_PATH = "exts"
+for extension in search_directory(EXT_PATH):
     try:
-        mod = import_module(f".{cogfile}", "cogs")
-    except (ImportError, SyntaxError):
-        # If a cogfile failed to load, skip it
-        logger.error(f"Failed to load cogs from '{cogfile}'")
-        continue
-    for cog_class in [
-            getattr(mod, x)
-            for x in dir(mod)
-            if isinstance(getattr(mod, x), type) and getattr(mod, x) != Cog and issubclass(getattr(mod, x), Cog)
-        ]:
-            try:
-                cog = cog_class(bot)
-                bot.add_cog(cog)
-            except BaseException as e:
-                logger.error(f"Failed to load cog '{cog_class.__name__}':")
-                logger.error(e)
-            logger.info(f"Loaded cog '{cog_class.__name__}' from '{cogfile}'")
-
-
+        bot.load_extension(extension)
+        logger.info(f"Loaded '{extension}'")
+    except:
+        logger.info(f"Failed to load '{extension}'")
 
 # Run the bot!
-logger.info(f"Bot {bot.__class__.__name__} started successfully")
+logger.info(f"Bot '{bot.__class__.__name__}' started successfully")
 bot.run(DISCORD_TOKEN)

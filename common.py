@@ -3,11 +3,7 @@
 THIS MODULE SHOULD NOT BE EDITED!
 """
 import os
-import dotenv
 import logging
-from typing import Any
-from importlib import import_module
-from disnake.ext.commands.cog import Cog
 
 
 class ConfigurationError(BaseException):
@@ -15,7 +11,6 @@ class ConfigurationError(BaseException):
 
 
 # Load environment variables
-dotenv.load_dotenv()
 ENV = dict(os.environ)
 
 # Configure disnake

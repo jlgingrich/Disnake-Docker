@@ -1,12 +1,9 @@
-.PHONY: all push clean latest 3.11-alpine
-
 TAG = jlgingrich/disnake
 
 latest:
 # Before building, make sure requirements are updated
 	@.venv/bin/pip freeze > requirements.txt
 	@docker build . -t ${TAG}
-
 
 venv:
 # Sets up a local venv with the project requirements

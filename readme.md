@@ -1,6 +1,6 @@
 # Disnake-Docker
 
-This container image provides a simple way to rapidly iterate on Discord bots using the [Disnake](https://docs.disnake.dev/en/stable/index.html) Python library.
+This container image provides a simple way to develop Discord bots using the [Disnake](https://docs.disnake.dev/en/stable/index.html) Python library.
 
 ## Use
 
@@ -19,7 +19,7 @@ services:
     build:
       dockerfile_inline: |
         FROM jlgingrich/disnake
-        COPY ./cogs ./cogs
+        COPY ./exts ./exts
     env_file:
       - .env
     volumes:
@@ -28,7 +28,9 @@ services:
 
 ```
 
-The inline `Dockerfile` here is essential, as it allows you to add a folder of Python files containing [Cogs](https://docs.disnake.dev/en/stable/ext/commands/cogs.html) to the final image. The `.env` file contains the `DISCORD_TOKEN` used by the bot to connect to Discord and can contain other environment variables used to modify the image. See [example.env](./example.env) for the other suggested environment variables.
+The inline `Dockerfile` here is essential, as it allows you to add a folder of Python files containing [Disnake Extensions](https://docs.disnake.dev/en/stable/ext/commands/extensions.html) to the final image.
+
+The `.env` file contains the `DISCORD_TOKEN` used by the bot to connect to Discord and can contain other environment variables used to modify the image. See [example.env](./example.env) for the other suggested environment variables. If the `.env` file is misconfigured, the container will receive a ConfigurationError and indicate which environment variable needs adjustment.
 
 ## Structure
 ```
@@ -36,18 +38,17 @@ app
 ├── common.py
 ├── bot.py
 ├── main.py
-├── cogs
+├── exts
 │   ├── examples.py
-│   ├── bad_cog.py
 │   └── ...
 ├── data
 │   └── ...
 └── logs
-   └── ...
+    └── ...
 ```
 
 ### `common.py`
-This module defines variables that are used by `main.py` and provide a standard import for cogs. This module should not be directly edited, but can be imported from any cog in `/app/cogs` or a custom `bot.py`.
+This module defines variables that are used by `main.py` and provide a standard import for cogs. This module should not be directly edited, but can be imported from any cog in `/app/cogs` or a custom `bot.py` and provides 
 
 ### `bot.py`
 This module defines the 'bot' instance used by the container. For most cogs, this file doesn't need to be changed. However, it can be overridden with a different file to have `main.py` use a different subclass of `disnake.Client`. See [bot.py](./bot.py) for more details.
@@ -55,11 +56,11 @@ This module defines the 'bot' instance used by the container. For most cogs, thi
 ### `main.py`
 This module is executed by the container to load the cogs and run the bot. This module should not be directly edited, and represents the primary automation component provided by this image.
 
-### `app/cogs`
-This directory is where Cogs can be defined to be automatically imported and attached to the bot at container startup.
+### `app/exts`
+This directory is where extensions should be copied to. At container start, the bot will attempt to load any extensions in this folder.
 
 ### `app/data`
-This is a volume where persistant data can be stored by the bot. This is not used by this base image.
+This is a volume where persistant data can be stored by the bot. This is not used by this base image but can be used by custom bot implementations or extensions.
 
 ### `app/logs`
 This is a volume where persistant logs can be stored by the bot. The default logging configuration provided by the base image puts a timed rotating log here named `disnake-core.log`.

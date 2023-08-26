@@ -1,11 +1,11 @@
-"""This module shows an example cog that will be loaded into the bot
+"""This module shows an example extension that loads a cog into the bot
 
-This module can be used as a base for other cogs.
+this module can be used as a base for other extensions.
 """
 from common import logger
 from typing import Optional
 from disnake import Member
-from disnake.ext.commands import slash_command
+from disnake.ext.commands import slash_command, Bot
 from disnake.ext.commands.cog import Cog
 
 
@@ -23,4 +23,10 @@ class Greetings(Cog):
         else:
             await ctx.send(f"Hello {member.name}!\n*This feels familiar...*")
         self._last_member = member
-        logger.info(f"Greeted {member.name}")
+        logger.info(f"Greeted '{member.name}'")
+
+def setup(bot: Bot):
+    bot.add_cog(Greetings(bot))
+
+def teardown(bot: Bot):
+    bot.remove_cog(Greetings.__cog_name__)

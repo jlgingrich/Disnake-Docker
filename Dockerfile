@@ -7,9 +7,8 @@ VOLUME [ "/app/logs" ]
 WORKDIR /app
 
 # Install python requirements
-RUN pip install python-dotenv
-RUN pip install disnake
-RUN pip install PyNaCl
+COPY ./requirements.txt .
+RUN pip install -r requirements.txt
 
 # This enables python-logging to actually show in the logs
 ENV PYTHONUNBUFFERED true

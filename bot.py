@@ -16,11 +16,9 @@ log_path = "/app/logs/disnake-core.log"
 log_handler = TimedRotatingFileHandler(
     log_path, when="d", interval=1, backupCount=LOG_BACKUP_COUNT
 )
-log_handler.setLevel(logging.INFO)
 log_handler.setFormatter(formatter)
 
 stdout_handler = StreamHandler()
-stdout_handler.setLevel(logging.WARN)
 stdout_handler.setFormatter(formatter)
 
 logger.addHandler(log_handler)
