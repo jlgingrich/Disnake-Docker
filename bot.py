@@ -2,7 +2,7 @@
 
 This module can be safely edited as long as it exports an instance called 'bot' that extends 'disnake.Client'.
 """
-from common import *
+from common import logger, LOG_BACKUP_COUNT, DISCORD_TESTING_GUILD_ID
 from logging import StreamHandler
 from logging.handlers import TimedRotatingFileHandler
 from disnake import Intents
@@ -28,7 +28,6 @@ logger.addHandler(stdout_handler)
 TEST_GUILDS = [DISCORD_TESTING_GUILD_ID] if DISCORD_TESTING_GUILD_ID else []
 COMMAND_SYNC_FLAGS = commands.CommandSyncFlags.default()
 INTENTS = Intents.default()
-# INTENTS.members = True
 
 # To use a different bot as the base, edit this file
 bot = InteractionBot(
