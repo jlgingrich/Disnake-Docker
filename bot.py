@@ -3,14 +3,14 @@
 This module can be safely edited as long as it exports an instance called 'bot' that extends 'disnake.Client'.
 """
 from common import logger, LOG_BACKUP_COUNT, DISCORD_TESTING_GUILD_ID
-from logging import StreamHandler
+from logging import StreamHandler, Formatter
 from logging.handlers import TimedRotatingFileHandler
 from disnake import Intents
 from disnake.ext import commands
 from disnake.ext.commands import InteractionBot
 
 # Perform additional logging configuration
-formatter = logging.Formatter('%(asctime)s:%(levelname)s:%(message)s')
+formatter = Formatter('%(asctime)s:%(levelname)s:%(message)s')
 
 log_path = "/app/logs/disnake-core.log"
 log_handler = TimedRotatingFileHandler(
