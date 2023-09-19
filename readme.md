@@ -4,6 +4,8 @@ This container image provides a simple way to develop Discord bots using the [Di
 
 In addition to `disnake` and its requirements, this image also contains the community libraries `disnake-ext-plugins` and `disnake-ext-components`.
 
+This base image is built and available on [Docker Hub](https://hub.docker.com/r/jlgingrich/disnake) and can be pulled with `docker pull jlgingrich/disnake:latest`.
+
 ## Use
 
 The easiest way to use this image is to create a `docker-compose.yaml` like the one below:
