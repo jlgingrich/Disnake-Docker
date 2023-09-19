@@ -32,7 +32,12 @@ services:
 
 The `dockerfile_inline` copies a local folder of [Disnake Extensions](https://docs.disnake.dev/en/stable/ext/commands/extensions.html) into the container, which are automatically loaded on container start.
 
-The `.env` file contains the `DISCORD_TOKEN` used by the bot to connect to Discord and can contain other environment variables used to modify the image. See [example.env](./example.env) for the other suggested environment variables. If the `.env` file is misconfigured, the container will receive a ConfigurationError and indicate which environment variable needs adjustment.
+The `.env` file contains the `DISCORD_TOKEN` used by the bot to connect to Discord and can contain other environment variables used to modify the image. See [example.env](./example.env) for the other suggested environment variables. If the `.env` file is misconfigured, the container will receive a `ConfigurationError` and indicate which environment variable needs adjustment.
+
+## Example
+
+See [Disnake-Hello](https://github.com/jlgingrich/Disnake-Hello) for a repo to clone for easy bot development.
+
 
 ## Structure
 ```
