@@ -24,7 +24,6 @@ services:
       dockerfile_inline: |
         FROM jlgingrich/disnake
         COPY ./exts ./exts
-        RUN ["rm", "./exts/examples.py"]
     env_file:
       - .env
     volumes:
