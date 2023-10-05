@@ -1,6 +1,7 @@
+# Use minimal linux image
 FROM python:3.11-alpine
 
-# Data and logs should persist
+# Data and logs should always persist
 VOLUME [ "/app/data" ]
 VOLUME [ "/app/logs" ]
 
@@ -14,9 +15,10 @@ RUN pip install -r requirements.txt
 # This enables python-logging to actually show in the logs
 ENV PYTHONUNBUFFERED true
 
+# Transfer in files
 COPY ./common.py .
-COPY ./bot.py .
 COPY ./main.py .
 COPY ./exts ./exts
 
-CMD ["python3", "main.py"]
+ENTRYPOINT [ "python3" ]
+CMD [ "main.py" ]

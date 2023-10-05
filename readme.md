@@ -44,10 +44,8 @@ See [Disnake-Hello](https://github.com/jlgingrich/Disnake-Hello) for a repo to c
 ```
 app
 ├── common.py
-├── bot.py
 ├── main.py
 ├── exts
-│   ├── examples.py
 │   └── ...
 ├── data
 │   └── ...
@@ -56,10 +54,7 @@ app
 ```
 
 ### `common.py`
-This module defines variables that are used by `main.py` and provide a standard import for cogs. This module should not be directly edited, but can be imported from any cog in `/app/cogs` or a custom `bot.py` and provides 
-
-### `bot.py`
-This module defines the 'bot' instance used by the container. For most cogs, this file doesn't need to be changed. However, it can be overridden with a different file to have `main.py` use a different subclass of `disnake.Client`. See [bot.py](./bot.py) for more details.
+This module defines variables that are used by `main.py` and provide a standard import for cogs. This module should not be directly edited, but can be imported from any extension in `/app/exts`. 
 
 ### `main.py`
 This module is executed by the container to load the cogs and run the bot. This module should not be directly edited, and represents the primary automation component provided by this image.

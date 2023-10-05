@@ -13,3 +13,7 @@ venv:
 clean:
 # Remove all docker images with the base tag
 	@docker images -a | grep "${TAG}*" | awk '{print $$1 ":" $$2}' | xargs docker rmi
+
+run:
+# Run docker image
+	@docker run ${TAG}
