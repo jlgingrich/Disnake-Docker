@@ -54,7 +54,9 @@ app
 ```
 
 ### `common.py`
-This module defines variables that are used by `main.py` and provide a standard import for cogs. This module should not be directly edited, but can be imported from any extension in `/app/exts`. 
+This module defines variables that are used by `main.py` and provide a standard import for cogs. This module should not be directly edited, but can be imported from any extension in `/app/exts`.
+
+The function `bot_intents` exported by this module is of particular importance, as it allows extensions to add priviliged intents to the bot in their `setup` function. This allows extension authors to distribute an extension as a single Python file.
 
 ### `main.py`
 This module is executed by the container to load the cogs and run the bot. This module should not be directly edited, and represents the primary automation component provided by this image.
