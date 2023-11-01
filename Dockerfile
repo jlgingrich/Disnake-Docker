@@ -21,4 +21,4 @@ COPY ./main.py .
 COPY ./exts ./exts
 
 ENTRYPOINT [ "python3" ]
-CMD [ "main.py" ]
+CMD [ "main.py", "&"]
