@@ -22,4 +22,5 @@ VOLUME /app/logs
 # Import app code
 COPY ./src core
 
+# Allow overwriting of entrypoint
 CMD ["python", "core/main.py"]
