@@ -1,0 +1,2 @@
+# Narrows the build context to just the app source
+!src
