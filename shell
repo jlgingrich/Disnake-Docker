@@ -1,0 +1,2 @@
+#! /bin/bash
+docker run --rm --name DEBUG -it jlgingrich/disnake:latest /bin/sh
