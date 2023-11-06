@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "disnake-docker"
+version = "0.1.0"
+description = "The source used to build jlgingrich/disnake"
+authors = ["jlgingrich <jlgingrich@proton.me>"]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+disnake = "^2.9.1"
+loguru = "^0.7.2"
+disnake-ext-components = {git = "https://github.com/DisnakeCommunity/disnake-ext-components.git"}
+disnake-ext-formatter = {git = "https://github.com/DisnakeCommunity/disnake-ext-formatter.git"}
+disnake-ext-plugins = {git = "https://github.com/DisnakeCommunity/disnake-ext-plugins.git"}
+typing-extensions = "^4.8.0"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

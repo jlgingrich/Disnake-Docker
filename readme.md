@@ -1,75 +1,65 @@
-# Disnake-Docker
+# disnake-docker
 
-This container image provides a simple way to develop Discord bots using the [Disnake](https://docs.disnake.dev/en/stable/index.html) Python library.
-
-In addition to `disnake` and its requirements, this image also contains the community libraries `disnake-ext-plugins` and `disnake-ext-components`.
+This container image provides a simple way to develop Discord bots using the [Disnake](https://docs.disnake.dev/en/stable/index.html) Python library. It comes with Python 3.11, the `disnake` library, several community-developed extensions for `disnake`, and a default bot setup that can be easily extended through plugins.
 
 This base image is built and available on [Docker Hub](https://hub.docker.com/r/jlgingrich/disnake) and can be pulled with `docker pull jlgingrich/disnake:latest`.
 
 ## Use
 
-The easiest way to use this image is to create a `docker-compose.yaml` like the one below:
-
-```yaml
-name: my-disnake-container
-
-volumes:
-  data:
-  logs:
-
-services:
-  core:
-    container_name: core
-    build:
-      dockerfile_inline: |
-        FROM jlgingrich/disnake
-        COPY ./exts ./exts
-    env_file:
-      - .env
-    volumes:
-      - data:/app/data
-      - logs:/app/logs
+```text
+project/
+├── Dockerfile
+├── data/
+└── plugins/
 ```
 
-The `dockerfile_inline` copies a local folder of [Disnake Extensions](https://docs.disnake.dev/en/stable/ext/commands/extensions.html) into the container, which are automatically loaded on container start.
+`./Dockerfile`
 
-The `.env` file contains the `DISCORD_TOKEN` used by the bot to connect to Discord and can contain other environment variables used to modify the image. See [example.env](./example.env) for the other suggested environment variables. If the `.env` file is misconfigured, the container will receive a `ConfigurationError` and indicate which environment variable needs adjustment.
+```Dockerfile
+# Using this base image
+FROM jlgingrich/disnake
 
-## Example
+# Install any new requirements
+COPY ./requirements.txt .
+RUN pip install -r requirements.txt
+RUN rm requirements.txt
 
-See [Disnake-Hello](https://github.com/jlgingrich/Disnake-Hello) for a repo to clone for easy bot development.
+# Copy in new plugins
+COPY ./plugins /app/core/plugins
+COPY ./data /app/data
+# Remove the testing plugin
+RUN rm app/core/plugins/ping.py
 
+# Run the CMD from the base image on start
+```
 
 ## Structure
+
+```text
+/app/
+├── core/            # Code central to the container, probably don't modify
+│   ├── bot.py         # An improved subclass of disnake.InteractionBot
+│   ├── main.py        # The launch script for the container
+│   └── plugins/       # The folder where plugins will be loaded from
+│       └── ping.py      # An example plugin that responds to a slash command
+├── data/            # Can be set up as a volume for persistant data
+└── logs/            # Logs output here, should be set as a volume
 ```
-app
-├── common.py
-├── main.py
-├── exts
-│   └── ...
-├── data
-│   └── ...
-└── logs
-    └── ...
-```
 
-### `common.py`
-This module defines variables that are used by `main.py` and provide a standard import for cogs. This module should not be directly edited, but can be imported from any extension in `/app/exts`.
+## Utilities
 
-The function `bot_intents` exported by this module is of particular importance, as it allows extensions to add priviliged intents to the bot in their `setup` function. This allows extension authors to distribute an extension as a single Python file.
+### Loguru
 
-### `main.py`
-This module is executed by the container to load the cogs and run the bot. This module should not be directly edited, and represents the primary automation component provided by this image.
+[Loguru](https://loguru.readthedocs.io/en/stable/) is a library intended to make Python logging less painful by adding a bunch of useful functionalities that solve caveats of the standard loggers. Using logs in your application should be an automatism, Loguru tries to make it both pleasant and powerful.
 
-### `/app/exts`
-This directory is where extensions should be copied to. At container start, the bot will attempt to load any extensions in this folder.
+### Components
 
-### `/app/data`
-This is a volume where persistant data can be stored by the bot. This is not used by this base image but can be used by custom bot implementations or extensions.
+[Components](https://github.com/DisnakeCommunity/disnake-ext-components) is a `disnake` extension aimed at making component interactions with listeners somewhat less cumbersome.
 
-### `/app/logs`
-This is a volume where persistant logs can be stored by the bot. The default logging configuration provided by the base image puts a timed rotating log here named `disnake-core.log`.
+### Plugins
 
-## Building
+[Plugins](https://github.com/DisnakeCommunity/disnake-ext-plugins) is a `disnake` extension that replaces cogs. No more pointless inheritance, no more singleton classes serving as little more than a namespace, and no more unexpected behaviour when you get anywhere near the inner workings of your extensions.
 
-The [Makefile](./Makefile) in this repository can build the latest image, create a Python venv in the current folder for development, and clean local Docker images.
+### Formatter
+
+[Formatter](https://github.com/DisnakeCommunity/disnake-ext-formatter) is a `disnake` extension that provides a `string.Formatter` subclass with special handling for `disnake` objects to hide attributes that shouldn't be otherwise exposed.

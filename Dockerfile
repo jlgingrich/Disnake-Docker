@@ -1,24 +1,26 @@
 # Use minimal linux image
 FROM python:3.11-alpine
 
-# Data and logs should always persist
-VOLUME [ "/app/data" ]
-VOLUME [ "/app/logs" ]
+# Fix CVE-2023-5752⁠
+RUN python3.11 -m pip install --upgrade pip
 
-WORKDIR /app
-
-# Install python requirements
+# Install packages via pypi and git
 RUN apk add git
 COPY ./requirements.txt .
 RUN pip install -r requirements.txt
+RUN rm requirements.txt
+RUN apk del git
 
-# This enables python-logging to actually show in the logs
-ENV PYTHONUNBUFFERED true
+# Configure directories
+RUN mkdir -p /app/data
+RUN mkdir -p /app/logs
 
-# Transfer in files
-COPY ./common.py .
-COPY ./main.py .
-COPY ./exts ./exts
+# Expose volumes
+VOLUME /app/data
+VOLUME /app/logs
 
-ENTRYPOINT [ "python3" ]
-CMD [ "main.py", "&"]
+# Import app code
+COPY ./src core
+
+# Allow overwriting of entrypoint
+CMD ["python", "core/main.py"]
