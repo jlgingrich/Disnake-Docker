@@ -15,9 +15,11 @@ RUN apk del git
 RUN mkdir -p /app/data
 RUN mkdir -p /app/logs
 
+WORKDIR /app
+
 # Expose volumes
-VOLUME /app/data
-VOLUME /app/logs
+VOLUME data
+VOLUME logs
 
 # Import app code
 COPY ./src core
